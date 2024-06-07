@@ -1,82 +1,54 @@
-import React, { useState } from "react";
-import { speakers } from "../../data/constants";
+import React, { useState } from 'react';
+import { SpeakerMembers } from './Speakerdata';
+import SpeakerItem from './SpeakerItem';
 
-const SpeakerItem = ({ name, organization }) => {
-  return (
-    <div className="col-6 col-lg-3 mb-4">
-      <div className="card  rounded-6 shadow-lg bg-white overflow-hidden hover:animate-bounce hover:bg-orange-500 transition duration-500 ease-in-out">
-        <a
-          href="#modal-speaker-1"
-          data-bs-toggle="modal"
-          data-bs-target="#modal-speaker-1"
-        ></a>
-        <div className="card-body">
-          <h5 className="card-title mb-2">{name}</h5>
-          <div className="card-text mb-3">
-            <div className="meta">{organization}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SpeakersSection = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredSpeakers, setFilteredSpeakers] = useState([]);
+const TeamSection = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTeam, setFilteredTeam] = useState(SpeakerMembers);
 
   const handleSearch = () => {
-    const filtered = speakers.filter((speaker) =>
-      speaker.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    const filtered = SpeakerMembers.filter((member) =>
+      member.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-    setFilteredSpeakers(filtered);
+    setFilteredTeam(filtered);
   };
 
   const handleKeyUp = (e) => {
     const userInput = e.target.value.toLowerCase();
     setSearchQuery(userInput);
 
-    const filtered = speakers.filter((speaker) =>
-      speaker.name.toLowerCase().includes(userInput),
+    const filtered = SpeakerMembers.filter((member) =>
+      member.name.toLowerCase().includes(userInput),
     );
-    setFilteredSpeakers(filtered);
+    setFilteredTeam(filtered);
   };
 
   return (
     <>
-      <section id="speakers-section" className="speakers-section section">
-        <div className="container">
-          <h3 className="section-heading text-center mb-3">Speakers</h3>
+      <section id="team-section" className="team-section section">
+        <div className="container content-space-1">
+          <h3 className="section-heading text-center mb-3">Speaker</h3>
           <div className="section-intro text-center single-col-max mx-auto mb-5">
-            Our Curated list of Speakers for the Pwani Innovation Week 2024
+            Meet our amazing Speakers!
           </div>
           <div
-            className="speakers-cta text-center py-3 d-flex"
+            className="team-cta text-center py-3 d-flex"
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <input
               type="text"
-              style={{
-                width: "300px",
-                height: "50px",
-                padding: "5px",
-              }}
+              style={{ width: '300px', height: '50px', padding: '5px' }}
               className="form-control"
               placeholder="Search Speakers"
               value={searchQuery}
               onChange={handleKeyUp}
             />
-
             <div>
-              <button
-                className="btn btn-primary btn-lg"
-                type="button"
-                onClick={handleSearch}
-              >
+              <button className="btn btn-primary btn-lg" type="button" onClick={handleSearch}>
                 Search
               </button>
             </div>
@@ -84,36 +56,33 @@ const SpeakersSection = () => {
 
           <div className="row">
             {searchQuery ? (
-              filteredSpeakers.map((speaker) => (
+              filteredTeam.map((member) => (
                 <SpeakerItem
-                  key={speaker.id}
-                  name={speaker.name}
-                  organization={speaker.organization}
+                  key={member.id}
+                  name={member.name}
+                  role={member.role}
+                  description={member.description}
+                  imageUrl={member.imageUrl}
                 />
               ))
-            ) : speakers.length > 0 ? (
-              speakers.map((speaker) => (
+            ) : SpeakerMembers.length > 0 ? (
+              SpeakerMembers.map((member) => (
                 <SpeakerItem
-                  key={speaker.id}
-                  name={speaker.name}
-                  organization={speaker.organization}
+                  key={member.id}
+                  name={member.name}
+                  role={member.role}
+                  description={member.description}
+                  imageUrl={member.imageUrl}
                 />
               ))
             ) : (
               <h4 className="text-center py-5 text-muted">
-                Our Speaker List is getting ready; we will update soon!
+                Our Team List is getting ready; we will update soon!
               </h4>
             )}
           </div>
 
-          <div className="speakers-cta text-center py-3">
-            <a
-              className="btn btn-primary btn-lg"
-              href="https://afritickets.events/2270-pwani-innovation-week"
-            >
-              Get Tickets
-            </a>
-          </div>
+          
         </div>
       </section>
       <div className="container">
@@ -123,4 +92,4 @@ const SpeakersSection = () => {
   );
 };
 
-export default SpeakersSection;
+export default TeamSection;
