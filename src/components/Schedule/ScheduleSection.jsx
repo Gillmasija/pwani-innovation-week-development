@@ -58,15 +58,28 @@ const ScheduleItem = ({ time, title, venue, type, partners, moderator }) => {
 
 const ScheduleSection = () => {
   const [activeTab, setActiveTab] = useState("tab-2"); // Set the default active tab
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
+  };
+
+  // Function to handle changes in search input
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
     <section id="schedule-section" className="schedule-section section">
       <div className="container">
         <h3 className="section-heading text-center mb-5">Schedule</h3>
+        {/* Search input */}
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
         {/* Nav tabs */}
         <ul
           className="schedule-nav nav nav-pills nav-fill"
@@ -122,9 +135,14 @@ const ScheduleSection = () => {
                   ? `${day.day} Schedule`
                   : `Day ${day.day} Schedule`}
               </h4>
-              {day.program.map((event, index) => (
-                <React.Fragment key={event.id}>
+              {day.program
+                // Filter events based on search query
+                .filter((event) =>
+                  event.event_title.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((event) => (
                   <ScheduleItem
+                    key={event.id}
                     time={event.time}
                     title={event.event_title}
                     venue={event.venue}
@@ -132,21 +150,7 @@ const ScheduleSection = () => {
                     moderator={event.moderator}
                     partners={event.partners}
                   />
-                  {/* Add partner content after the first schedule
-                  {index === 0 &&
-                    event.partners &&
-                    event.partners.length > 0 && (
-                      <div className="partners">
-                        <h4 className="partner-heading">Partners:</h4>
-                        <ul>
-                          {event.partners.map((partner) => (
-                            <li key={partner.id}>{partner.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )} */}
-                </React.Fragment>
-              ))}
+                ))}
             </div>
           ))}
         </div>
